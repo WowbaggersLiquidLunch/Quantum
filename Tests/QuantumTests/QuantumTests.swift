@@ -8,8 +8,4 @@ final class QuantumTests: XCTestCase {
         // results.
         XCTAssertEqual(Quantum().text, "Hello, World!")
     }
-
-    static var allTests = [
-        ("testExample", testExample),
-    ]
 }
