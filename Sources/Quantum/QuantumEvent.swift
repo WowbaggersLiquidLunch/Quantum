@@ -73,7 +73,7 @@ public final class QuantumEvent<State: Hashable> {
 	///	When there is only one observed event, `initialObservedEvent === initialObservedEvent`.
 	@inlinable
 	public var finalObservedEvent: Self {
-		<#Explain the logic#>
+		//	<#Explain the logic#>
 		if let immediatelySucceedingObservedEvent = immediatelySucceedingObservedEvent {
 			return immediatelySucceedingObservedEvent.finalObservedEvent
 		} else if let immediatelyPrecedingUnobservedEvent = immediatelyPrecedingUnobservedEvent {
