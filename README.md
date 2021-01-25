@@ -32,6 +32,8 @@ print(quantumNumber)
 //	All for values are possible.
 ```
 
+Please see [the project's wiki](https://github.com/WowbaggersLiquidLunch/Quantum/wiki) for detailed documentation. 
+
 ---
 
 This library, and everything included in this directory is released both to the public domain (through the Unlicense license) and under the MIT license. The user is free to choose either license. In general, public domain is preferred, unless the circumstance dictates otherwise. For more information, see [LICENSE](LICENSE).
