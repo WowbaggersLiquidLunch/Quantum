@@ -39,6 +39,8 @@ public final class QuantumEvent<State: Hashable> {
 	///	The event that is observed to have started the system at an initial state.
 	///
 	///	When there is only one observed event, `initialObservedEvent === initialObservedEvent`.
+	///
+	///	- Complexity: O(_n_), where _n_ is the number of observed events in the event-tree.
 	@inlinable
 	public var initialObservedEvent: Self {
 		immediatelyPrecedingObservedEvent?.initialObservedEvent ?? self
@@ -71,6 +73,8 @@ public final class QuantumEvent<State: Hashable> {
 	///	The final observed event.
 	///
 	///	When there is only one observed event, `initialObservedEvent === initialObservedEvent`.
+	///
+	///	- Complexity: O(log _n_) on average and O(_n_) in worst case, where _n_ is the number of events in the event-tree.
 	@inlinable
 	public var finalObservedEvent: Self {
 		//	<#Explain the logic#>
@@ -126,12 +130,14 @@ public final class QuantumEvent<State: Hashable> {
 	}
 	
 	///	A `Boolean` value indicating whether the event is observed to have started the system at an initial state.
+	///	- Complexity: O(_n_), where _n_ is the number of observed events in the event-tree.
 	@inlinable
 	public var isInitialObservedEvent: Bool {
 		self === initialObservedEvent
 	}
 	
 	///	A `Boolean` value indicating whether the event is the final observed event.
+	///	- Complexity: O(log _n_) on average and O(_n_) in worst case, where _n_ is the number of events in the event-tree.
 	@inlinable
 	public var isFinalObservedEvent: Bool {
 		self === finalObservedEvent
@@ -154,6 +160,8 @@ public final class QuantumEvent<State: Hashable> {
 	///	The chain of observed events from the initial observed event through the immediately preceding observed events.
 	///
 	///	An empty array is returned for the initial observed event and all unobserved events except fo those following right after the final observed event.
+	///
+	///	- Complexity: O(_n_), where _n_ is the number of observed events in the tree.
 	@inlinable
 	public var precedingObservedEvents: [Self] {
 		if let immediatelyPrecedingObservedEvent = immediatelyPrecedingObservedEvent {
@@ -168,6 +176,8 @@ public final class QuantumEvent<State: Hashable> {
 	///	The chain of observed events from the immediately succeeding observed events through the final observed event.
 	///
 	///	An empty array is returned for the final observed event and all unobserved events.
+	///
+	///	- Complexity: O(_n_), where _n_ is the number of observed events in the tree.
 	@inlinable
 	public var succeedingObservedEvents: [Self] {
 		if let immediatelySucceedingObservedEvent = immediatelySucceedingObservedEvent {
@@ -182,6 +192,8 @@ public final class QuantumEvent<State: Hashable> {
 	///	The chain of unobserved events leading to this event.
 	///
 	///	An empty array is returned for all observed events and unobserved events that follow right after the final observed event.
+	///
+	///	- Complexity: O(log _n_), where _n_ is the number of unobserved events in the tree.
 	@inlinable
 	public var precedingUnobservedEvents: [Self] {
 		if let immediatelyPrecedingUnobservedEvent = immediatelyPrecedingUnobservedEvent {
@@ -196,6 +208,8 @@ public final class QuantumEvent<State: Hashable> {
 	///	All unobserved events that require this event to be observed if any of them is to be observed.
 	///
 	///	An empty array is returned for all final unobserved events.
+	///
+	///	- Complexity: O(_n_), where _n_ is the number of unobserved events in the tree.
 	@inlinable
 	public var succeedingUnobservedEvents: [Self] {
 		if !isBranchableEvent {
@@ -210,12 +224,14 @@ public final class QuantumEvent<State: Hashable> {
 	}
 	
 	///	All unobserved events.
+	///	- Complexity: O(_n_), where _n_ is the number of unobserved events in the tree.
 	@inlinable
 	public var allUnobservedEvents: [Self] {
 		finalObservedEvent.succeedingUnobservedEvents
 	}
 	
 	///	The final event and all unobserved events.
+	///	- Complexity: O(_n_), where _n_ is the number of unobserved events in the tree.
 	@inlinable
 	public var allBranchableEvents: [Self] {
 		var _allBranchableEvents = allUnobservedEvents
@@ -224,6 +240,7 @@ public final class QuantumEvent<State: Hashable> {
 	}
 	
 	///	All observed events that move the system to the same state as this event does.
+	///	- Complexity: O(_n_), where _n_ is the number of observed events in the tree.
 	public var equiStatalObservedEvents: [Self] {
 		var _equiStatalObservedEvents: [Self] = []
 		if initialObservedEvent.state == state {
@@ -234,6 +251,7 @@ public final class QuantumEvent<State: Hashable> {
 	}
 	
 	///	Returns the chain of observed events that happened after this event and moved the system to the given state.
+	///	- Complexity: O(_n_), where _n_ is the number of observed events in the tree.
 	///	- Parameter state: The given state that the the observed events moved the system to.
 	///	- Returns: An array containing observed events that happened after this event and moved the system to the given state.
 	private func succeedingObservedEvents(movingTo state: State) -> [Self] {
@@ -247,6 +265,7 @@ public final class QuantumEvent<State: Hashable> {
 	}
 	
 	///	All branchable events that move the system to the same state as this event does.
+	///	- Complexity: O(log _n_) on average and O(_n_) in worst case, where _n_ is the number of events in the event-tree.
 	@inlinable
 	public var equiStatalBranchableEvents: [Self] {
 		var _equiStatalBranchableEvents: [Self] = []
@@ -258,11 +277,13 @@ public final class QuantumEvent<State: Hashable> {
 	}
 	
 	///	All unobserved events that move the system to the same state as this event does.
+	///	- Complexity: O(log _n_) on average and O(_n_) in worst case, where _n_ is the number of events in the event-tree.
 	public var equiStatalUnobservedEvents: [Self] {
 		finalObservedEvent.succeedingUnobservedEvents(movingTo: state)
 	}
 	
 	///	Returns the chain of unobserved events that possibly happened after this event and moved the system to the given state.
+	///	- Complexity: O(_n_), where _n_ is the number of unobserved events in the tree.
 	///	- Parameter state: The state that the the unobserved events moved the system to, if they had happened.
 	///	- Returns: An array containing unobserved events that possibly happened after this event and moved the system to the given state.
 	private func succeedingUnobservedEvents(movingTo state: State) -> [Self] {
@@ -279,6 +300,7 @@ public final class QuantumEvent<State: Hashable> {
 	//	MARK: -
 	
 	///	Branches off this event (and optionally its equi-statal events) with new and distinct events that move the system to the given state.
+	///	- Complexity: O(1), if `withEquiStatalBranchableEvents == false`; otherwise, O(_n_), where _n_ is the number of unobserved events in the tree.
 	///	- Parameters:
 	///	  - nextState: The state the new events are to move the system to.
 	///	  - withEquiStatalBranchableEvents: A `Boolean` value indicating whether this event's equi-statal events should be branched off with new events.
@@ -294,6 +316,7 @@ public final class QuantumEvent<State: Hashable> {
 	}
 	
 	///	Branches off all succeeding unobserved events (and optionally this event) with new and distinct events that move the system to the given state.
+	///	- Complexity: O(_n_), where _n_ is the number of unobserved events in the tree.
 	///	- Parameters:
 	///	  - nextState: The state the new events are to move the system to.
 	///	  - withThisEvent: A `Boolean` value indicating whether this event should be branched off with new events.
@@ -321,6 +344,8 @@ public final class QuantumEvent<State: Hashable> {
 	///	Observe which of the events that follows right after this event actually happened.
 	///
 	///	It is possible that none of the events have happened.
+	///
+	///	- Complexity: O(_n_), where _n_ is the number of unobserved events that follow right after this event.
 	public func observeNextEvent() {
 		var coinToss = Double.random(in: 0..<1)
 		var probabilisticWeightOfNextEvent = 0.5
@@ -340,7 +365,8 @@ public final class QuantumEvent<State: Hashable> {
 		immediatelySucceedingUnobservedEvents = []
 	}
 	
-	/// The probability distribution for the outcomes of measuring the system at its present state.
+	///	The probability distribution for the outcomes of measuring the system at its present state, if this event is assumed to have happened.
+	///	- Complexity: O(_n_) on average, where _n_ is the number of unobserved events in the tree.
 	public var outcomeProbabilities: [State: Double] {
 		if !isBranchableEvent {
 			return finalObservedEvent.outcomeProbabilities
@@ -349,11 +375,12 @@ public final class QuantumEvent<State: Hashable> {
 		}
 	}
 	
-	/// Calculates the probability distribution for the outcomes of measuring the system at its present state, if the given event is assumed to have happened.
-	/// - Parameters:
-	///   - event: The event that is assumed to have happened.
-	///   - probabilitySpaceSize: The total size of the probability space to be shared by all possible states. Use maximum value, `1`, if the assumed probability of `event` happening is 100%.
-	/// - Returns: The probability distribution for the outcomes of measuring the system at its present state, if the given event is assumed to have happened.
+	///	Calculates the probability distribution for the outcomes of measuring the system at its present state, if the given event is assumed to have happened.
+	///	- Complexity: O(_n_), where _n_ is the number of unobserved events in the tree.
+	///	- Parameters:
+	///	  - event: The event that is assumed to have happened.
+	///	  - probabilitySpaceSize: The total size of the probability space to be shared by all possible states. Use maximum value, `1`, if the assumed probability of `event` happening is 100%.
+	///	- Returns: The probability distribution for the outcomes of measuring the system at its present state, if the given event is assumed to have happened.
 	private static func probailityDistribution(ofOutcomeSucceeding event: Self, probabilitySpaceSize: Double = 1) -> [State: Double] {
 		var probailityDistribution: [State: Double] = [:]
 		var subProbabilitySpaceSize = probabilitySpaceSize
