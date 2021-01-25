@@ -16,7 +16,7 @@
 ///	var quantumText = Quantum(initialState: "wave–particle duality")
 ///	```
 ///
-///	Or, it can be create by applying the `@Quantum` property wrapper to the declaration of a variable of a `Hashable`-conforming type.
+///	Or, it can be create by annotating `@Quantum` to the declaration of a variable of a `Hashable`-conforming type.
 ///
 ///	```swift
 ///	@Quantum
