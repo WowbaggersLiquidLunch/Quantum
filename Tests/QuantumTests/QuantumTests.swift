@@ -10,26 +10,30 @@ import XCTest
 @testable import Quantum
 
 final class QuantumTests: XCTestCase {
-	func testQuantumValues() {
-		//	FIXME: Use local properties once property wrappers support them.
-		struct QuantumProduct {
-			@Quantum
-			var string: String = "abc"
-			@Quantum
-			var int: Int = 0
-		}
-		var quantumProduct = QuantumProduct()
+	
+	@Quantum
+	var quantumText = ""
+	
+	@Quantum
+	var quantumNumber = 0
+	
+	override func setUp() {
+		$quantumText.unsafeMutableSelf = Quantum(initialState: "abc")
+		$quantumNumber.unsafeMutableSelf = Quantum(initialState: 0)
+	}
+	
+	func testSystemWideSuperposition() {
 		
-		quantumProduct.string = "bcd"
-		quantumProduct.string = "cde"
-		quantumProduct.string = "def"
+		quantumText = "bcd"
+		$quantumText.unsafeMutableSelf.superpose(on: "cde")
+		quantumText = "def"
 		
-		quantumProduct.int = 1
-		quantumProduct.int = 2
-		quantumProduct.int = 1
+		quantumNumber = 1
+		quantumNumber = 2
+		$quantumNumber.unsafeMutableSelf.superpose(on: 1)
 		
 		XCTAssertEqual(
-			quantumProduct.$string.quantumState,
+			$quantumText.outcomeProbabilities,
 			[
 				"abc": 0.125,
 				"bcd": 0.125,
@@ -38,17 +42,17 @@ final class QuantumTests: XCTestCase {
 			]
 		)
 		
-		let observedString = quantumProduct.string
+		let observedString = quantumText
 		
 		XCTAssertTrue(["abc", "bcd", "cde", "def"].contains(observedString))
 		
 		XCTAssertEqual(
-			quantumProduct.$string.quantumState,
+			$quantumText.outcomeProbabilities,
 			[observedString: 1]
 		)
 		
 		XCTAssertEqual(
-			quantumProduct.$int.quantumState,
+			$quantumNumber.outcomeProbabilities,
 			[
 				0: 0.125,
 				1: 0.625,
@@ -56,27 +60,61 @@ final class QuantumTests: XCTestCase {
 			]
 		)
 		
-		let observedInt = quantumProduct.int
+		let observedInt = quantumNumber
 		
 		XCTAssertTrue([0, 1, 2].contains(observedInt))
 		
 		XCTAssertEqual(
-			quantumProduct.$int.quantumState,
+			$quantumNumber.outcomeProbabilities,
 			[observedInt: 1]
 		)
 		
-		let newQuantumInt = quantumProduct.$int.superposed(on: 3)
+		let newQuantumNumber = $quantumNumber.superposed(on: 3)
 		
 		XCTAssertEqual(
-			newQuantumInt.quantumState,
+			newQuantumNumber.outcomeProbabilities,
 			[
 				observedInt: 0.5,
 				3: 0.5
 			]
 		)
 		
-    }
+	}
 	
-	//	TODO: Test quantum state of quantum states.
+	func testStateSpecificSuperposition() {
+		
+		$quantumText.unsafeMutableSelf.superpose("abc", on: "bcd")
+		$quantumText.unsafeMutableSelf.superpose("abc", on: "cde")
+		$quantumText.unsafeMutableSelf.superpose("abc", on: "def")
+		$quantumText.unsafeMutableSelf.superpose("abc", on: "def")
+		$quantumText.unsafeMutableSelf.superpose("efg", on: "abc")	//	Should have no effect
+		
+		XCTAssertEqual(
+			$quantumText.outcomeProbabilities,
+			[
+				"abc": 0.0625,
+				"bcd": 0.5,
+				"cde": 0.25,
+				"def": 0.1875
+			]
+		)
+		
+		$quantumNumber.unsafeMutableSelf.superpose(1, on: 2)	//	Should have no effect
+		$quantumNumber.unsafeMutableSelf.superpose(0, on: 1)
+		$quantumNumber.unsafeMutableSelf.superpose(1, on: 2)
+		$quantumNumber.unsafeMutableSelf.superpose(0, on: 3)
+		$quantumNumber.unsafeMutableSelf.superpose(3, on: 1)
+		
+		XCTAssertEqual(
+			$quantumNumber.outcomeProbabilities,
+			[
+				0: 0.25,
+				1: 0.375,
+				2: 0.25,
+				3: 0.125
+			]
+		)
+		
+	}
 	
 }
