@@ -12,31 +12,39 @@
 ///
 ///	A quantum mechanical system can be created directly, via one of `Quantum`'s initialisers.
 ///
-///		var quantumText = Quantum(initialState: "wave–particle duality")
+///	```swift
+///	var quantumText = Quantum(initialState: "wave–particle duality")
+///	```
 ///
 ///	Or, it can be create by applying the `@Quantum` property wrapper to the declaration of a variable of a `Hashable`-conforming type.
 ///
-///		@Quantum
-///		var schrödingersNumber = 0
+///	```swift
+///	@Quantum
+///	var schrödingersNumber = 0
+///	```
 ///
 ///	A `Quantum` instance's present state can be observed via its `measurement` computed property, and a `@Quantum`-wrapped variable can be observed reading it directly or via any getter.
 ///
-///		print(quantumText.measurement)
-///		//	Prints "wave–particle duality", the only possible state at this point in time.
+///	```swift
+///	print(quantumText.measurement)
+///	//	Prints "wave–particle duality", the only possible state at this point in time.
 ///
-///		print(schrödingersNumber)
-///		//	Prints 0, the only possible state at this point in time.
+///	print(schrödingersNumber)
+///	//	Prints 0, the only possible state at this point in time.
+///	```
 ///
 ///	Accessing Events
 ///	----------------
 ///
 ///	Under the surface, a `Quantum` instance is represented by a rooted tree of events, where the root is the initial observed event (the initialisation of the instance<!--TODO: <#Add exception for entangled initilisation#>-->). The tree starts with a chain of observed events that ends at the final observed event, which branches into trees of unobserved events. The final observed event of a `Quantum` instance can be accessed directly, and all other events can be accessed via it:
 ///
-///		let finalObservedTextEvent = quantumText.finalObservedEvent
-///		let initialObservedTextEvent = initialObservedTextEvent.initialObservedEvent
+///	```swift
+///	let finalObservedTextEvent = quantumText.finalObservedEvent
+///	let initialObservedTextEvent = initialObservedTextEvent.initialObservedEvent
 ///
-///		let finalObservedNumberEvent = $schrödingersNumber.finalObservedEvent
-///		let nextUnobservedNumberEvents = finalObservedNumberEvent.immediatelySucceedingUnobservedEvents
+///	let finalObservedNumberEvent = $schrödingersNumber.finalObservedEvent
+///	let nextUnobservedNumberEvents = finalObservedNumberEvent.immediatelySucceedingUnobservedEvents
+///	```
 ///
 ///	A system can arrive at a state through many possible chains of events; many events can move the system to the same state. Although, only one chain would have happened on observation, if the system was indeed in the state.
 ///
@@ -47,63 +55,71 @@
 ///
 ///	When a quantum mechanical system moves from all its possible but unobserved states to a (new) possible state _A_, it's said that the system is superposed on _A_. When such a superposition happens, all unobserved events not already resulting in _A_ in the event-tree, along the final observed event, branch off with new and distinct events moving the system to _A_. A `Quantum` instance can move to a new possible state via the `superpose(on:)` method, and `@Quantum`-wrapped variables can be moved through any setter or assignment:
 ///
-///		quantumText.superpose(on: "uncertainty principle")
-///		//	At this point in time, quantumText.measurement has
-///		//	    50% probability for "wave–particle duality",
-///		//	and 50%                 "uncertainty principle".
-///		quantumText.superpose(on: "optical comb")
-///		//	At this point in time, quantumText.measurement has
-///		//	    25% probability for "wave–particle duality",
-///		//	    25%                 "uncertainty principle",
-///		//	and 50%                 "optical comb".
+///	```swift
+///	quantumText.superpose(on: "uncertainty principle")
+///	//	At this point in time, quantumText.measurement has
+///	//	    50% probability for "wave–particle duality",
+///	//	and 50%                 "uncertainty principle".
+///	quantumText.superpose(on: "optical comb")
+///	//	At this point in time, quantumText.measurement has
+///	//	    25% probability for "wave–particle duality",
+///	//	    25%                 "uncertainty principle",
+///	//	and 50%                 "optical comb".
 ///
-///		$schrödingersNumber.superpose(on: 1)
-///		//	At this point in time, schrödingersNumber has
-///		//	    50% probability for 0,
-///		//	and 50%                 1.
-///		schrödingersNumber = 2
-///		//	At this point in time, schrödingersNumber has
-///		//	    25% probability for 0,
-///		//	    25%                 1,
-///		//	and 50%                 2.
+///	$schrödingersNumber.superpose(on: 1)
+///	//	At this point in time, schrödingersNumber has
+///	//	    50% probability for 0,
+///	//	and 50%                 1.
+///	schrödingersNumber = 2
+///	//	At this point in time, schrödingersNumber has
+///	//	    25% probability for 0,
+///	//	    25%                 1,
+///	//	and 50%                 2.
+///	```
 ///
 ///	Additionally, a quantum mechanical system can be moved from one particular possible but unobserved state _B_ to a different state _C_. With such a movement, only _B_, instead of the entire system, is superposed on _C_. Because there are many possible event-chains that lead to _B_, all unobserved events moving the system to _B_ must branch off with new and distinct events moving the system to _C_. This kind of state-specific superposition is possible through `superpose(_:on:)`:
 ///
-///		quantumText.superpose("uncertainty principle", on: "potential barrier")
-///		//	At this point in time, quantumText.measurement has
-///		//	    25.0% probability for "wave–particle duality",
-///		//	    12.5%                 "uncertainty principle",
-///		//	    25.0%                 "optical comb",
-///		//	and 12.5%                 "potential barrier".
+///	```swift
+///	quantumText.superpose("uncertainty principle", on: "potential barrier")
+///	//	At this point in time, quantumText.measurement has
+///	//	    25.0% probability for "wave–particle duality",
+///	//	    12.5%                 "uncertainty principle",
+///	//	    25.0%                 "optical comb",
+///	//	and 12.5%                 "potential barrier".
 ///
-///		$schrödingersNumber.superpose(2, on: 3)
-///		//	At this point in time, schrödingersNumber has
-///		//	    25% probability for 0,
-///		//	    25%                 1,
-///		//	    25%                 2,
-///		//	and 25%                 3.
+///	$schrödingersNumber.superpose(2, on: 3)
+///	//	At this point in time, schrödingersNumber has
+///	//	    25% probability for 0,
+///	//	    25%                 1,
+///	//	    25%                 2,
+///	//	and 25%                 3.
+///	```
 ///
 ///	Accessing a System's Present State's Probability Distribution
 ///	-------------------------------------------------------------
 ///
 ///	Although a quantum mechanical system's present state is unknown until observed, the probability distribution for the outcome of measuring the system at its present state is known. This information is accessible through the `outcomeProbabilities` computed property:
 ///
-///		print(quantumText.outcomeProbabilities)
-///		//	Prints '["wave–particle duality": 0.25, "uncertainty principle": 0.125, "optical comb": 0.25, "potential barrier": 0.125]'.
-///		print($schrödingersNumber.outcomeProbabilities)
-///		//	Prints "[0: 0.25, 1: 0.25, 2: 0.25, 3: 0.25]".
+///	```swift
+///	print(quantumText.outcomeProbabilities)
+///	//	Prints '["wave–particle duality": 0.25, "uncertainty principle": 0.125, "optical comb": 0.25, "potential barrier": 0.125]'.
+///	print($schrödingersNumber.outcomeProbabilities)
+///	//	Prints "[0: 0.25, 1: 0.25, 2: 0.25, 3: 0.25]".
+///	```
 ///
 ///	Once a quantum mechanical system is observed, and before it's moved again, the present state's probability distribution is the observed state at 100% probability:
 ///
-///		print(quantumText.measurement)
-///		//	Prints "optical comb", one of the possible states.
-///		print(quantumText.outcomeProbabilities)
-///		//	Prints '["optical comb": 1]'
+///	```swift
+///	print(quantumText.measurement)
+///	//	Prints "optical comb", one of the possible states.
+///	print(quantumText.outcomeProbabilities)
+///	//	Prints '["optical comb": 1]'
 ///
-///		print(schrödingersNumber)
-///		//	Prints 0, one of the possible states.
-///		print($schrödingersNumber.outcomeProbabilities)
-///		//	Prints "[0: 1]"
+///	print(schrödingersNumber)
+///	//	Prints 0, one of the possible states.
+///	print($schrödingersNumber.outcomeProbabilities)
+///	//	Prints "[0: 1]"
+///	```
 ///
 ///	- Note: `State` must be a value type. Otherwise the state's probability distribution can't be correctly calculated, due to a limitation of `Dictionary.subscript(_:default:)`.
 @propertyWrapper
