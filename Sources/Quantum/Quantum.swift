@@ -220,6 +220,7 @@ public struct Quantum<State: Hashable> {
 	}
 	
 	///	Creates a new quantum mechanical system from the superposition of this system on the given state.
+	///	- Complexity: O(_n_), where _n_ is the number of unobserved events in the event-tree.
 	///	- Parameter state: The given state to superpose on.
 	///	- Returns: A new quantum mechanical system equivalent to the superposition of this system on the given state.
 	@inlinable
