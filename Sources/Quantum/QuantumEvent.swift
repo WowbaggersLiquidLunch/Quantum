@@ -77,17 +77,23 @@ public final class QuantumEvent<State: Hashable> {
 	///	- Complexity: O(log _n_) on average and O(_n_) in worst case, where _n_ is the number of events in the event-tree.
 	@inlinable
 	public var finalObservedEvent: Self {
-		//	<#Explain the logic#>
+		//	If there is an observed event that follows right after this event, then find the final observed event through it.
 		if let immediatelySucceedingObservedEvent = immediatelySucceedingObservedEvent {
 			return immediatelySucceedingObservedEvent.finalObservedEvent
+		//	If there isn't an observed event that follows right after this event, then this event is either the final observed event, or an unobserved event.
+		//	If the event right before this event is unobserved, then find the final observed event from it.
 		} else if let immediatelyPrecedingUnobservedEvent = immediatelyPrecedingUnobservedEvent {
 			return immediatelyPrecedingUnobservedEvent.finalObservedEvent
+		//	If the event right before this event is observed, then this event is either the final observed event, or an unobserved event that follows right after the final observed event.
 		} else if let immediatelyPrecedingObservedEvent = immediatelyPrecedingObservedEvent {
+			//	If the observed event right before this even has no observed event that follows right after it, then it's the final observed event.
 			if immediatelyPrecedingObservedEvent.immediatelySucceedingObservedEvent == nil {
 				return immediatelyPrecedingObservedEvent
+			//	Otherwise, this event is the final observed event.
 			} else {
 				return self
 			}
+		//	Otherwise, this event is the final observed event.
 		} else {
 			return self
 		}
