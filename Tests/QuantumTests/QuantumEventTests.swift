@@ -14,30 +14,34 @@ final class QuantumEventTests: XCTestCase {
 	func testSingleEvent() {
 		func testSingleEvent<State>(_ event: QuantumEvent<State>, state: State) {
 			XCTAssertEqual(event.state, state)
-			XCTAssertTrue(event.initialObservedEvent === event)
+			XCTAssertNil(event.immediatelyPrecedingEvent)
+			XCTAssertTrue(event.earliestObservedEvent === event)
 			XCTAssertNil(event.immediatelyPrecedingObservedEvent)
 			XCTAssertNil(event.immediatelySucceedingObservedEvent)
-			XCTAssertTrue(event.finalObservedEvent === event)
+			XCTAssertTrue(event.latestObservedEvent === event)
 			XCTAssertNil(event.immediatelyPrecedingUnobservedEvent)
 			XCTAssertTrue(event.immediatelySucceedingUnobservedEvents.isEmpty)
-			XCTAssertTrue(event.isInitialObservedEvent)
-			XCTAssertTrue(event.isFinalObservedEvent)
-			XCTAssertTrue(event.isObservedEvent)
+			XCTAssertTrue(event.isObserved)
+			XCTAssertTrue(event.isEarliestObserved)
+			XCTAssertTrue(event.isLatestObserved)
 			XCTAssertFalse(event.isFinalUnobservedEvent)
-			XCTAssertFalse(event.isUnobservedEvent)
-			XCTAssertTrue(event.isBranchableEvent)
+			XCTAssertTrue(event.isBranchable)
 			XCTAssertTrue(event.precedingObservedEvents.isEmpty)
 			XCTAssertTrue(event.succeedingObservedEvents.isEmpty)
 			XCTAssertTrue(event.precedingUnobservedEvents.isEmpty)
 			XCTAssertTrue(event.succeedingUnobservedEvents.isEmpty)
+			XCTAssertTrue(event.allObservedEvents.count == 1)
+			XCTAssertTrue(event.allObservedEvents.first === event)
 			XCTAssertTrue(event.allUnobservedEvents.isEmpty)
 			XCTAssertEqual(event.allBranchableEvents.count, 1)
 			XCTAssertTrue(event.allBranchableEvents.first === event)
 			XCTAssertEqual(event.equiStatalObservedEvents.count, 1)
 			XCTAssertTrue(event.equiStatalObservedEvents.first === event)
+			XCTAssertTrue(event.equiStatalSucceedingObservedEvents.isEmpty)
 			XCTAssertEqual(event.equiStatalBranchableEvents.count, 1)
 			XCTAssertTrue(event.equiStatalBranchableEvents.first === event)
 			XCTAssertTrue(event.equiStatalUnobservedEvents.isEmpty)
+			XCTAssertTrue(event.equiStatalSucceedingUnobservedEvents.isEmpty)
 			XCTAssertEqual(event.outcomeProbabilities, [state: 1])
 		}
 		
@@ -57,22 +61,25 @@ final class QuantumEventTests: XCTestCase {
 	func testSingleObservedEventWithUnobservedEvents() {
 		func testSingleObservedEvent<State>(_ event: QuantumEvent<State>, state: State) {
 			XCTAssertEqual(event.state, state)
-			XCTAssertTrue(event.initialObservedEvent === event)
+			XCTAssertNil(event.immediatelyPrecedingEvent)
+			XCTAssertTrue(event.earliestObservedEvent === event)
 			XCTAssertNil(event.immediatelyPrecedingObservedEvent)
 			XCTAssertNil(event.immediatelySucceedingObservedEvent)
-			XCTAssertTrue(event.finalObservedEvent === event)
+			XCTAssertTrue(event.latestObservedEvent === event)
 			XCTAssertNil(event.immediatelyPrecedingUnobservedEvent)
-			XCTAssertTrue(event.isInitialObservedEvent)
-			XCTAssertTrue(event.isFinalObservedEvent)
-			XCTAssertTrue(event.isObservedEvent)
+			XCTAssertTrue(event.isObserved)
+			XCTAssertTrue(event.isEarliestObserved)
+			XCTAssertTrue(event.isLatestObserved)
 			XCTAssertFalse(event.isFinalUnobservedEvent)
-			XCTAssertFalse(event.isUnobservedEvent)
-			XCTAssertTrue(event.isBranchableEvent)
+			XCTAssertTrue(event.isBranchable)
 			XCTAssertTrue(event.precedingObservedEvents.isEmpty)
 			XCTAssertTrue(event.succeedingObservedEvents.isEmpty)
 			XCTAssertTrue(event.precedingUnobservedEvents.isEmpty)
+			XCTAssertEqual(event.allObservedEvents.count, 1)
+			XCTAssertTrue(event.allObservedEvents.first === event)
 			XCTAssertEqual(event.equiStatalObservedEvents.count, 1)
 			XCTAssertTrue(event.equiStatalObservedEvents.first === event)
+			XCTAssertTrue(event.equiStatalSucceedingObservedEvents.isEmpty)
 		}
 		
 		let textEvent = QuantumEvent(arrivingAt: "abc")
@@ -87,6 +94,7 @@ final class QuantumEventTests: XCTestCase {
 		XCTAssertEqual(textEvent.equiStatalBranchableEvents.count, 1)
 		XCTAssertTrue(textEvent.equiStatalBranchableEvents.first === textEvent)
 		XCTAssertTrue(textEvent.equiStatalUnobservedEvents.isEmpty)
+		XCTAssertTrue(textEvent.equiStatalSucceedingUnobservedEvents.isEmpty)
 		XCTAssertEqual(textEvent.outcomeProbabilities, ["abc": 1])
 		
 		textEvent.moveSucceedingUnobservedEvents(to: "cde", withThisEvent: false)	//	Should have no effect.
@@ -99,6 +107,7 @@ final class QuantumEventTests: XCTestCase {
 		XCTAssertEqual(textEvent.equiStatalBranchableEvents.count, 1)
 		XCTAssertTrue(textEvent.equiStatalBranchableEvents.first === textEvent)
 		XCTAssertTrue(textEvent.equiStatalUnobservedEvents.isEmpty)
+		XCTAssertTrue(textEvent.equiStatalSucceedingUnobservedEvents.isEmpty)
 		XCTAssertEqual(textEvent.outcomeProbabilities, ["abc": 1])
 		
 		textEvent.moveSucceedingUnobservedEvents(to: "def", withThisEvent: true)
@@ -112,6 +121,7 @@ final class QuantumEventTests: XCTestCase {
 		XCTAssertEqual(textEvent.equiStatalBranchableEvents.count, 1)
 		XCTAssertTrue(textEvent.equiStatalBranchableEvents.first === textEvent)
 		XCTAssertTrue(textEvent.equiStatalUnobservedEvents.isEmpty)
+		XCTAssertTrue(textEvent.equiStatalSucceedingUnobservedEvents.isEmpty)
 		XCTAssertEqual(textEvent.outcomeProbabilities, ["abc": 0.5, "def": 0.5])
 		
 		textEvent.move(to: "efg")
@@ -126,6 +136,7 @@ final class QuantumEventTests: XCTestCase {
 		XCTAssertEqual(textEvent.equiStatalBranchableEvents.count, 1)
 		XCTAssertTrue(textEvent.equiStatalBranchableEvents.first === textEvent)
 		XCTAssertTrue(textEvent.equiStatalUnobservedEvents.isEmpty)
+		XCTAssertTrue(textEvent.equiStatalSucceedingUnobservedEvents.isEmpty)
 		XCTAssertEqual(textEvent.outcomeProbabilities, ["abc": 0.25, "def": 0.5, "efg": 0.25])
 		
 		textEvent.move(to: "fgh", withEquiStatalBranchableEvents: false)
@@ -141,6 +152,7 @@ final class QuantumEventTests: XCTestCase {
 		XCTAssertEqual(textEvent.equiStatalBranchableEvents.count, 1)
 		XCTAssertTrue(textEvent.equiStatalBranchableEvents.first === textEvent)
 		XCTAssertTrue(textEvent.equiStatalUnobservedEvents.isEmpty)
+		XCTAssertTrue(textEvent.equiStatalSucceedingUnobservedEvents.isEmpty)
 		XCTAssertEqual(textEvent.outcomeProbabilities, ["abc": 0.125, "def": 0.5, "efg": 0.25, "fgh": 0.125])
 		
 		textEvent.move(to: "ghi", withEquiStatalBranchableEvents: true)
@@ -157,22 +169,22 @@ final class QuantumEventTests: XCTestCase {
 		XCTAssertEqual(textEvent.equiStatalBranchableEvents.count, 1)
 		XCTAssertTrue(textEvent.equiStatalBranchableEvents.first === textEvent)
 		XCTAssertTrue(textEvent.equiStatalUnobservedEvents.isEmpty)
+		XCTAssertTrue(textEvent.equiStatalSucceedingUnobservedEvents.isEmpty)
 		XCTAssertEqual(textEvent.outcomeProbabilities, ["abc": 0.0625, "def": 0.5, "efg": 0.25, "fgh": 0.125, "ghi": 0.0625])
 		
 		textEvent.observeNextEvent()
 		XCTAssertEqual(textEvent.state, "abc")
-		XCTAssertTrue(textEvent.initialObservedEvent === textEvent)
+		XCTAssertTrue(textEvent.earliestObservedEvent === textEvent)
 		XCTAssertNil(textEvent.immediatelyPrecedingObservedEvent)
 		XCTAssertNotNil(textEvent.immediatelySucceedingObservedEvent)
-		XCTAssertFalse(textEvent.finalObservedEvent === textEvent)
+		XCTAssertFalse(textEvent.latestObservedEvent === textEvent)
 		XCTAssertNil(textEvent.immediatelyPrecedingUnobservedEvent)
 		XCTAssertTrue(textEvent.immediatelySucceedingUnobservedEvents.isEmpty)
-		XCTAssertTrue(textEvent.isInitialObservedEvent)
-		XCTAssertFalse(textEvent.isFinalObservedEvent)
-		XCTAssertTrue(textEvent.isObservedEvent)
+		XCTAssertTrue(textEvent.isEarliestObserved)
+		XCTAssertFalse(textEvent.isLatestObserved)
+		XCTAssertTrue(textEvent.isObserved)
 		XCTAssertFalse(textEvent.isFinalUnobservedEvent)
-		XCTAssertFalse(textEvent.isUnobservedEvent)
-		XCTAssertFalse(textEvent.isBranchableEvent)
+		XCTAssertFalse(textEvent.isBranchable)
 		XCTAssertTrue(textEvent.precedingObservedEvents.isEmpty)
 		XCTAssertEqual(textEvent.succeedingObservedEvents.count, 1)
 		XCTAssertTrue(textEvent.precedingUnobservedEvents.isEmpty)
@@ -185,17 +197,18 @@ final class QuantumEventTests: XCTestCase {
 		XCTAssertTrue(textEvent.equiStatalBranchableEvents.isEmpty)
 		XCTAssertFalse(textEvent.equiStatalBranchableEvents.first === textEvent)
 		XCTAssertTrue(textEvent.equiStatalUnobservedEvents.isEmpty)
+		XCTAssertTrue(textEvent.equiStatalSucceedingUnobservedEvents.isEmpty)
 		XCTAssertNil(textEvent.outcomeProbabilities["abc"])
 		
 		//	TODO: Test other types for `State`.
 	}
 	
 	//	TODO: Test more kinds of events:
-	//	      initial non-final observed events,
-	//	      non-initial non-final observed events,
-	//	      non-initial final observed events without unobserved events,
-	//	      non-initial final observed events with unobserved events,
-	//	      non-final unobserved events at depth 1,
-	//	      non-final unobserved events at depth > 1,
+	//	      earlist non-latest observed events,
+	//	      non-earliest non-latest observed events,
+	//	      non-earliest latest observed events without unobserved events,
+	//	      non-earliest latest observed events with unobserved events,
+	//	      non-latest unobserved events at depth 1,
+	//	      non-latest unobserved events at depth > 1,
 	//	      final unobserved events.
 }

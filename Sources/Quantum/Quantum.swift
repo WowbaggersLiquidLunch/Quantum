@@ -36,14 +36,14 @@
 ///	Accessing Events
 ///	----------------
 ///
-///	Under the surface, a `Quantum` instance is represented by a rooted tree of events, where the root is the initial observed event (the initialisation of the instance<!--TODO: <#Add exception for entangled initilisation#>-->). The tree starts with a chain of observed events that ends at the final observed event, which branches into trees of unobserved events. The final observed event of a `Quantum` instance can be accessed directly, and all other events can be accessed via it:
+///	Under the surface, a `Quantum` instance is represented by a rooted tree of events, where the root is the earliest observed event (the initialisation of the instance<!--TODO: <#Add exception for entangled initilisation#>-->). The tree starts with a chain of observed events that ends at the latest observed event, which branches into trees of unobserved events. The latest observed event of a `Quantum` instance can be accessed directly, and all other events can be accessed via it:
 ///
 ///	```swift
-///	let finalObservedTextEvent = quantumText.finalObservedEvent
-///	let initialObservedTextEvent = initialObservedTextEvent.initialObservedEvent
+///	let latestObservedTextEvent = quantumText.latestObservedEvent
+///	let earliestObservedTextEvent = earliestObservedTextEvent.earliestObservedEvent
 ///
-///	let finalObservedNumberEvent = $schrödingersNumber.finalObservedEvent
-///	let nextUnobservedNumberEvents = finalObservedNumberEvent.immediatelySucceedingUnobservedEvents
+///	let latestObservedNumberEvent = $schrödingersNumber.latestObservedEvent
+///	let nextUnobservedNumberEvents = latestObservedNumberEvent.immediatelySucceedingUnobservedEvents
 ///	```
 ///
 ///	A system can arrive at a state through many possible chains of events; many events can move the system to the same state. Although, only one chain would have happened on observation, if the system was indeed in the state.
@@ -53,7 +53,7 @@
 ///	Moving a Quantum Mechanical System
 ///	----------------------------------
 ///
-///	When a quantum mechanical system moves from all its possible but unobserved states to a (new) possible state _A_, it's said that the system is superposed on _A_. When such a superposition happens, all unobserved events not already resulting in _A_ in the event-tree, along the final observed event, branch off with new and distinct events moving the system to _A_. A `Quantum` instance can move to a new possible state via the `superpose(on:)` method, and `@Quantum`-wrapped variables can be moved through any setter or assignment:
+///	When a quantum mechanical system moves from all its possible but unobserved states to a (new) possible state _A_, it's said that the system is superposed on _A_. When such a superposition happens, all unobserved events not already resulting in _A_ in the event-tree, along the latest observed event, branch off with new and distinct events moving the system to _A_. A `Quantum` instance can move to a new possible state via the `superpose(on:)` method, and `@Quantum`-wrapped variables can be moved through any setter or assignment:
 ///
 ///	```swift
 ///	quantumText.superpose(on: "uncertainty principle")
@@ -128,7 +128,7 @@ public struct Quantum<State: Hashable> {
 	///	Creates a quantum mechanical system with the given initial state.
 	///	- Parameter initialState: The initial state of the system.
 	public init(initialState: State) {
-		finalObservedEvent = Event(arrivingAt: initialState)
+		latestObservedEvent = Event(arrivingAt: initialState)
 	}
 	
 	//	MARK: - Property Wrapper
@@ -165,16 +165,16 @@ public struct Quantum<State: Hashable> {
 	
 	///	The final one in the chain of observed events.
 	///
-	///	This event moved the system to its final observed state.
-	public private(set) var finalObservedEvent: Event
+	///	This event moved the system to its latest observed state.
+	public private(set) var latestObservedEvent: Event
 	
 	///	The probability distribution for the outcome of measuring the system at its present state.
 	///	- Complexity: O(_n_) where _n_ is the number of unobserved events in the event-tree.
-	///	- Note: The probabilities are represented as `Double` values. Because the probabilities are always multiples of 2⁻ⁿ less than or equal to 1, where n is a positive integer, the probabilities are guaranteed to be precise if and only if the longest chain of unobserved events (excluding the final observed event) has at most 106 events.
+	///	- Note: The probabilities are represented as `Double` values. Because the probabilities are always multiples of 2⁻ⁿ less than or equal to 1, where n is a positive integer, the probabilities are guaranteed to be precise if and only if the longest chain of unobserved events (excluding the latest observed event) has at most 106 events.
 	///	  > Explanation: There are 52 fraction bits in `Double`, so all fractions that are multiples of 2⁻⁵³ and less than or equal to 1 can be precisely represented. Because no 2 consecutive events can move the system to the same state in any event-chain, it takes at least 106 events in a chain to give 1 state a probability of 1 - 2⁻⁵³.
 	@inlinable
 	public var outcomeProbabilities: [State: Double] {
-		finalObservedEvent.outcomeProbabilities
+		latestObservedEvent.outcomeProbabilities
 	}
 	
 	///	The state the system is in.
@@ -184,24 +184,24 @@ public struct Quantum<State: Hashable> {
 	///	- Complexity: O(log _n_) in the general case and O(_n_) worst case, where _n_ is the number of unobserved events in the event-tree.
 	public var measurement: State {
 		mutating get {
-			while !finalObservedEvent.immediatelySucceedingUnobservedEvents.isEmpty {
-				finalObservedEvent.observeNextEvent()
-				finalObservedEvent = finalObservedEvent.finalObservedEvent
+			while !latestObservedEvent.immediatelySucceedingUnobservedEvents.isEmpty {
+				latestObservedEvent.observeNextEvent()
+				latestObservedEvent = latestObservedEvent.latestObservedEvent
 			}
-			return finalObservedEvent.state
+			return latestObservedEvent.state
 		}
 	}
 	
 	///	Superposes the system's all possible states on the given state.
 	///
-	///	This superposition works by branching off all unobserved events not already resulting in `state` in the event-tree, along the final observed event, with new and distinct events that move the system to `state`.
+	///	This superposition works by branching off all unobserved events not already resulting in `state` in the event-tree, along the latest observed event, with new and distinct events that move the system to `state`.
 	///
 	///	- Complexity: O(_n_), where _n_ is the number of unobserved events in the event-tree.
 	///
 	///	- Parameter state: The given state to superpose on.
 	@inlinable
 	public mutating func superpose(on state: State) {
-		finalObservedEvent.moveSucceedingUnobservedEvents(to: state, withThisEvent: true)
+		latestObservedEvent.moveSucceedingUnobservedEvents(to: state, withThisEvent: true)
 	}
 	
 	///	Superposes one of the system's possible states on the given state.
@@ -215,7 +215,7 @@ public struct Quantum<State: Hashable> {
 	///	  - nextState: The given state to superpose on.
 	@inlinable
 	public mutating func superpose(_ possibleState: State, on nextState: State) {
-		guard let oneOfPossibleEvents = finalObservedEvent.allBranchableEvents.first(where: { $0.state == possibleState } ) else { return }
+		guard let oneOfPossibleEvents = latestObservedEvent.allBranchableEvents.first(where: { $0.state == possibleState } ) else { return }
 		oneOfPossibleEvents.move(to: nextState, withEquiStatalBranchableEvents: true)
 	}
 	
