@@ -154,13 +154,6 @@ public struct Quantum<State: Hashable> {
 	
 	//	MARK: -
 	
-	//	FIXME: Keep unsafeMutableSelf mutable without mutating `projectedValue`.
-	@inlinable
-	public var unsafeMutableSelf: Self {
-		get { self }
-		set { self = newValue }
-	}
-	
 	public typealias Event = QuantumEvent<State>
 	
 	///	The final one in the chain of observed events.

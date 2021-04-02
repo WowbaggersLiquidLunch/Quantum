@@ -18,19 +18,19 @@ final class QuantumTests: XCTestCase {
 	var quantumNumber = 0
 	
 	override func setUp() {
-		$quantumText.unsafeMutableSelf = Quantum(initialState: "abc")
-		$quantumNumber.unsafeMutableSelf = Quantum(initialState: 0)
+		$quantumText = Quantum(initialState: "abc")
+		$quantumNumber = Quantum(initialState: 0)
 	}
 	
 	func testSystemWideSuperposition() {
 		
 		quantumText = "bcd"
-		$quantumText.unsafeMutableSelf.superpose(on: "cde")
+		$quantumText.superpose(on: "cde")
 		quantumText = "def"
 		
 		quantumNumber = 1
 		quantumNumber = 2
-		$quantumNumber.unsafeMutableSelf.superpose(on: 1)
+		$quantumNumber.superpose(on: 1)
 		
 		XCTAssertEqual(
 			$quantumText.outcomeProbabilities,
@@ -83,11 +83,11 @@ final class QuantumTests: XCTestCase {
 	
 	func testStateSpecificSuperposition() {
 		
-		$quantumText.unsafeMutableSelf.superpose("abc", on: "bcd")
-		$quantumText.unsafeMutableSelf.superpose("abc", on: "cde")
-		$quantumText.unsafeMutableSelf.superpose("abc", on: "def")
-		$quantumText.unsafeMutableSelf.superpose("abc", on: "def")
-		$quantumText.unsafeMutableSelf.superpose("efg", on: "abc")	//	Should have no effect
+		$quantumText.superpose("abc", on: "bcd")
+		$quantumText.superpose("abc", on: "cde")
+		$quantumText.superpose("abc", on: "def")
+		$quantumText.superpose("abc", on: "def")
+		$quantumText.superpose("efg", on: "abc")	//	Should have no effect
 		
 		XCTAssertEqual(
 			$quantumText.outcomeProbabilities,
@@ -99,11 +99,11 @@ final class QuantumTests: XCTestCase {
 			]
 		)
 		
-		$quantumNumber.unsafeMutableSelf.superpose(1, on: 2)	//	Should have no effect
-		$quantumNumber.unsafeMutableSelf.superpose(0, on: 1)
-		$quantumNumber.unsafeMutableSelf.superpose(1, on: 2)
-		$quantumNumber.unsafeMutableSelf.superpose(0, on: 3)
-		$quantumNumber.unsafeMutableSelf.superpose(3, on: 1)
+		$quantumNumber.superpose(1, on: 2)	//	Should have no effect
+		$quantumNumber.superpose(0, on: 1)
+		$quantumNumber.superpose(1, on: 2)
+		$quantumNumber.superpose(0, on: 3)
+		$quantumNumber.superpose(3, on: 1)
 		
 		XCTAssertEqual(
 			$quantumNumber.outcomeProbabilities,
