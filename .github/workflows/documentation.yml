@@ -20,9 +20,11 @@ jobs:
         with:
           inputs: "Sources/Quantum"
           output: "Documentation"
-      - name: Upload Documentation to Wiki
-        uses: SwiftDocOrg/github-wiki-publish-action@v1
+       name: Fix permissions
+        run: 'sudo chown --recursive $USER Documentation'
+      - name: Publish documentation to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@4.1.1
         with:
-          path: "Documentation"
-        env:
-          GH_PERSONAL_ACCESS_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          branch: wiki
+          folder: Documentation
+          single-commit: true
