@@ -143,8 +143,11 @@ public final class QuantumEvent<State: Hashable> {
 	public var isBranchable: Bool {
 		immediatelySucceedingObservedEvent == nil
 	}
-	
-	//	MARK: - Inspecting the System
+}
+
+//	MARK: - Inspecting the System
+
+extension QuantumEvent {
 	
 	///	The chain of observed events from the earliest observed event through the immediately preceding observed events.
 	///
@@ -260,8 +263,11 @@ public final class QuantumEvent<State: Hashable> {
 	public var equiStatalSucceedingUnobservedEvents: [Self] {
 		succeedingUnobservedEvents.filter { $0.state == state }
 	}
-	
-	//	MARK: -
+}
+
+//	MARK: - Moving the System
+
+extension QuantumEvent {
 	
 	///	Branches off this event (and optionally its equi-statal events) with new and distinct events that move the system to the given state.
 	///	- Complexity: O(1), if `withEquiStatalBranchableEvents == false`; otherwise, O(_n_), where _n_ is the number of unobserved events in the tree.
@@ -294,8 +300,11 @@ public final class QuantumEvent<State: Hashable> {
 			move(to: nextState)
 		}
 	}
-	
-	//	MARK: - Observing the System
+}
+
+//	MARK: - Observing the System
+
+extension QuantumEvent {
 	
 	///	Observe which of the events that follows right after this event actually happened.
 	///
