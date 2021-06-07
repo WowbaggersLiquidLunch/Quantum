@@ -16,7 +16,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Generate Documentation
-        uses: SwiftDocOrg/swift-doc@1.0.0-beta.6
+        uses: SwiftDocOrg/swift-doc@master
         with:
           inputs: "Sources/Quantum"
           output: "Documentation"
