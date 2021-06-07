@@ -20,6 +20,7 @@ jobs:
         with:
           inputs: "Sources/Quantum"
           output: "Documentation"
+          format: html
       - name: Fix permissions
         run: 'sudo chown --recursive $USER Documentation'
       - name: Publish documentation to GitHub Pages
