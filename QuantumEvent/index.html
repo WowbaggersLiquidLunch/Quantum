@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> - QuantumEvent</title>
+    <link rel="stylesheet" type="text/css" href="./all.css" media="all" />
+</head>
+<body>
+    <header>
+        <a href="./">
+            <strong>
+                
+            </strong>
+            <span>Documentation</span>
+        </a>
+    </header>
+
+    <!--
+    <form class="search">
+        <input type="search" placeholder="Search" />
+    </form>
+    -->
+
+    <nav>
+        <div class="wrapper">
+            <h2>On This Page</h2>
+            <ol><li><a href="#nested type aliases">Nested Type Aliases</a><ul><li class="typealias"><a href="#quantumevent.`self`">`Self`</a></li></ul></li><li><a href="#initializers">Initializers</a><ul><li class="initializer"><a href="#quantumevent.init(arrivingat:following:)">init(arriving​At:​following:​)</a></li></ul></li><li><a href="#properties">Properties</a><ul><li class="variable"><a href="#quantumevent.state">state</a></li><li class="variable"><a href="#quantumevent.immediatelyprecedingevent">immediately​Preceding​Event</a></li><li class="variable"><a href="#quantumevent.earliestobservedevent">earliest​Observed​Event</a></li><li class="variable"><a href="#quantumevent.immediatelyprecedingobservedevent">immediately​Preceding​Observed​Event</a></li><li class="variable"><a href="#quantumevent.immediatelysucceedingobservedevent">immediately​Succeeding​Observed​Event</a></li><li class="variable"><a href="#quantumevent.latestobservedevent">latest​Observed​Event</a></li><li class="variable"><a href="#quantumevent.immediatelyprecedingunobservedevent">immediately​Preceding​Unobserved​Event</a></li><li class="variable"><a href="#quantumevent.immediatelysucceedingunobservedevents">immediately​Succeeding​Unobserved​Events</a></li><li class="variable"><a href="#quantumevent.isobserved">is​Observed</a></li><li class="variable"><a href="#quantumevent.isearliestobserved">is​Earliest​Observed</a></li><li class="variable"><a href="#quantumevent.islatestobserved">is​Latest​Observed</a></li><li class="variable"><a href="#quantumevent.isfinalunobservedevent">is​Final​Unobserved​Event</a></li><li class="variable"><a href="#quantumevent.isbranchable">is​Branchable</a></li><li class="variable"><a href="#quantumevent.precedingobservedevents">preceding​Observed​Events</a></li><li class="variable"><a href="#quantumevent.succeedingobservedevents">succeeding​Observed​Events</a></li><li class="variable"><a href="#quantumevent.precedingunobservedevents">preceding​Unobserved​Events</a></li><li class="variable"><a href="#quantumevent.succeedingunobservedevents">succeeding​Unobserved​Events</a></li><li class="variable"><a href="#quantumevent.allobservedevents">all​Observed​Events</a></li><li class="variable"><a href="#quantumevent.allunobservedevents">all​Unobserved​Events</a></li><li class="variable"><a href="#quantumevent.allbranchableevents">all​Branchable​Events</a></li><li class="variable"><a href="#quantumevent.equistatalobservedevents">equi​Statal​Observed​Events</a></li><li class="variable"><a href="#quantumevent.equistatalsucceedingobservedevents">equi​Statal​Succeeding​Observed​Events</a></li><li class="variable"><a href="#quantumevent.equistatalbranchableevents">equi​Statal​Branchable​Events</a></li><li class="variable"><a href="#quantumevent.equistatalunobservedevents">equi​Statal​Unobserved​Events</a></li><li class="variable"><a href="#quantumevent.equistatalsucceedingunobservedevents">equi​Statal​Succeeding​Unobserved​Events</a></li><li class="variable"><a href="#quantumevent.outcomeprobabilities">outcome​Probabilities</a></li></ul></li><li><a href="#methods">Methods</a><ul><li class="function"><a href="#quantumevent.move(to:withequistatalbranchableevents:)">move(to:​with​Equi​Statal​Branchable​Events:​)</a></li><li class="function"><a href="#quantumevent.movesucceedingunobservedevents(to:withthisevent:)">move​Succeeding​Unobserved​Events(to:​with​This​Event:​)</a></li><li class="function"><a href="#quantumevent.observenextevent()">observe​Next​Event()</a></li></ul></li></ol>
+        </div>
+    </nav>
+
+    <main>
+        <article>
+            <h1>
+    <small>Class</small>
+    <code class="name">Quantum​Event</code>
+</h1>
+
+<div class="declaration">
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="attribute">final</span> <span class="keyword">class</span> <span class="type">QuantumEvent</span>&lt;<span class="variable">State</span>: <span class="type">Hashable</span>&gt;  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>An instantaneous event that might have happened and moved a quantum mechanical system from one state to another state.</p>
+
+</div>
+<div class="discussion">
+    <aside class="note" title="Note">
+    <p>Currently interlacing of observed and unobserved events is not supported. An event tree must start with an observed event, followed by an uninterrupted chain of observed events, until the first unobserved event. No observed event can follow from an unobserved event.</p>
+
+</aside>
+</div>
+
+    <section id="nested type aliases">
+        <h2>Nested Type Aliases</h2>
+
+        <div role="article" class="typealias" id="quantumevent.`self`">
+    <h3>
+        <code><a href="#quantumevent.`self`">`Self`</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">typealias</span> <span class="variable">`Self`</span> = <a href="./QuantumEvent"><span class="type">QuantumEvent</span></a>&lt;<span class="type">State</span>&gt;</body></html></code></pre>
+</div>
+</div>
+    </section>
+    <section id="initializers">
+        <h2>Initializers</h2>
+
+        <div role="article" class="initializer" id="quantumevent.init(arrivingat:following:)">
+    <h3>
+        <code><a href="#quantumevent.init(arrivingat:following:)">init(arriving​At:​following:​)</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">init</span>(<span class="variable">arrivingAt</span> <span class="variable">state</span>: <span class="type">State</span>, <span class="variable">following</span> <span class="variable">immediatelyPrecedingEvent</span>: <span class="keyword">Self</span>? = <span class="keyword">nil</span>)  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Creates an event that might have happened.</p>
+
+</div>
+<h4>Parameters</h4>
+
+<table class="parameters">
+  <thead hidden>
+  <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <th>state</th>
+    <td><code class="type">State</code></td>
+    <td><p>The state the event moves the system to.</p>
+</td>
+</tr>
+<tr>
+    <th>previmmediately​Preceding​Eventious​Event</th>
+    <td></td>
+    <td><p>The event that this event follows right after.</p>
+</td>
+</tr>
+  </tbody>
+</table>
+</div>
+    </section>
+    <section id="properties">
+        <h2>Properties</h2>
+
+        <div role="article" class="variable" id="quantumevent.state">
+    <h3>
+        <code><a href="#quantumevent.state">state</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">let</span> <span class="variable">state</span>: <span class="type">State</span></body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>The state the event (might have) moved the system to.</p>
+
+</div>
+<div class="discussion">
+    <p>If the event is observed to have happened, then the system is known to be in this state at the end of the event, until the next event.</p>
+
+</div>
+</div>
+<div role="article" class="variable" id="quantumevent.immediatelyprecedingevent">
+    <h3>
+        <code><a href="#quantumevent.immediatelyprecedingevent">immediately​Preceding​Event</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">private</span>(<span class="variable">set</span>) <span class="keyword">var</span> <span class="variable">immediatelyPrecedingEvent</span>: <span class="keyword">Self</span>?  </body></html></code></pre>
+</div>
+</div>
+<div role="article" class="variable" id="quantumevent.earliestobservedevent">
+    <h3>
+        <code><a href="#quantumevent.earliestobservedevent">earliest​Observed​Event</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">inlinable</span>
+	<span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">earliestObservedEvent</span>: <span class="keyword">Self</span>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>The event that is observed to have started the system at its earliest known state.</p>
+
+</div>
+<div class="discussion">
+    <p>When there is only one observed event, <code>earliestObservedEvent === latestObservedEvent</code>.</p>
+
+<aside class="complexity" title="Complexity">
+    <p>O(<em>m</em> + log <em>n</em>), where <em>m</em> is the number of observed events, and <em>n</em> is the number of unobserved events in the event-tree.</p>
+
+</aside>
+</div>
+</div>
+<div role="article" class="variable" id="quantumevent.immediatelyprecedingobservedevent">
+    <h3>
+        <code><a href="#quantumevent.immediatelyprecedingobservedevent">immediately​Preceding​Observed​Event</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">inlinable</span>
+	<span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">immediatelyPrecedingObservedEvent</span>: <span class="keyword">Self</span>?  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>The observed event that this event follows right after.</p>
+
+</div>
+<div class="discussion">
+    <p><code>nil</code> is returned for the earliest observed event and unobserved events other than those immediately following right after the latest observed events.</p>
+
+</div>
+</div>
+<div role="article" class="variable" id="quantumevent.immediatelysucceedingobservedevent">
+    <h3>
+        <code><a href="#quantumevent.immediatelysucceedingobservedevent">immediately​Succeeding​Observed​Event</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">private</span>(<span class="variable">set</span>) <span class="keyword">var</span> <span class="variable">immediatelySucceedingObservedEvent</span>: <span class="keyword">Self</span>?  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>The observed event that follows right after this event.</p>
+
+</div>
+<div class="discussion">
+    <p><code>nil</code> is returned for the latest observed events and all unobserved events.</p>
+
+</div>
+</div>
+<div role="article" class="variable" id="quantumevent.latestobservedevent">
+    <h3>
+        <code><a href="#quantumevent.latestobservedevent">latest​Observed​Event</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">inlinable</span>
+	<span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">latestObservedEvent</span>: <span class="keyword">Self</span>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>The latest observed event.</p>
+
+</div>
+<div class="discussion">
+    <p>When there is only one observed event, <code>earliestObservedEvent === latestObservedEvent</code>.</p>
+
+<aside class="complexity" title="Complexity">
+    <p>O(<em>m</em> + log <em>n</em>), where <em>m</em> is the number of observed events, and <em>n</em> is the number of unobserved events in the event-tree.</p>
+
+</aside>
+</div>
+</div>
+<div role="article" class="variable" id="quantumevent.immediatelyprecedingunobservedevent">
+    <h3>
+        <code><a href="#quantumevent.immediatelyprecedingunobservedevent">immediately​Preceding​Unobserved​Event</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">inlinable</span>
+	<span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">immediatelyPrecedingUnobservedEvent</span>: <span class="keyword">Self</span>?  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>The unobserved event that this event follows right after.</p>
+
+</div>
+<div class="discussion">
+    <p><code>nil</code> is returned for all observed events and unobserved events that immediately follow right after the latest observed events.</p>
+
+</div>
+</div>
+<div role="article" class="variable" id="quantumevent.immediatelysucceedingunobservedevents">
+    <h3>
+        <code><a href="#quantumevent.immediatelysucceedingunobservedevents">immediately​Succeeding​Unobserved​Events</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">private</span>(<span class="variable">set</span>) <span class="keyword">var</span> <span class="variable">immediatelySucceedingUnobservedEvents</span>: [<span class="keyword">Self</span>] = []  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>The unobserved events that follows right after this event.</p>
+
+</div>
+<div class="discussion">
+    <p>An empty array is returned for all non-latest observed events and all final unobserved events.</p>
+
+</div>
+</div>
+<div role="article" class="variable" id="quantumevent.isobserved">
+    <h3>
+        <code><a href="#quantumevent.isobserved">is​Observed</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">private</span>(<span class="variable">set</span>) <span class="keyword">var</span> <span class="variable">isObserved</span>: <span class="type">Bool</span>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>A <code>Boolean</code> value indicating whether the event is observed to have happened.</p>
+
+</div>
+</div>
+<div role="article" class="variable" id="quantumevent.isearliestobserved">
+    <h3>
+        <code><a href="#quantumevent.isearliestobserved">is​Earliest​Observed</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">inlinable</span>
+	<span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">isEarliestObserved</span>: <span class="type">Bool</span>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>A <code>Boolean</code> value indicating whether the event is observed to have started the system at its earliest known state.</p>
+
+</div>
+</div>
+<div role="article" class="variable" id="quantumevent.islatestobserved">
+    <h3>
+        <code><a href="#quantumevent.islatestobserved">is​Latest​Observed</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">inlinable</span>
+	<span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">isLatestObserved</span>: <span class="type">Bool</span>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>A <code>Boolean</code> value indicating whether the event is the latest observed event.</p>
+
+</div>
+</div>
+<div role="article" class="variable" id="quantumevent.isfinalunobservedevent">
+    <h3>
+        <code><a href="#quantumevent.isfinalunobservedevent">is​Final​Unobserved​Event</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">inlinable</span>
+	<span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">isFinalUnobservedEvent</span>: <span class="type">Bool</span>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>A <code>Boolean</code> value indicating whether the event is an unobserved event without other unobserved events following right after it.</p>
+
+</div>
+</div>
+<div role="article" class="variable" id="quantumevent.isbranchable">
+    <h3>
+        <code><a href="#quantumevent.isbranchable">is​Branchable</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">inlinable</span>
+	<span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">isBranchable</span>: <span class="type">Bool</span>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>A <code>Boolean</code> value indicating whether the event can have unobserved events following right after it.</p>
+
+</div>
+</div>
+<div role="article" class="variable" id="quantumevent.precedingobservedevents">
+    <h3>
+        <code><a href="#quantumevent.precedingobservedevents">preceding​Observed​Events</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">inlinable</span>
+	<span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">precedingObservedEvents</span>: [<span class="keyword">Self</span>]  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>The chain of observed events from the earliest observed event through the immediately preceding observed events.</p>
+
+</div>
+<div class="discussion">
+    <p>An empty array is returned for the earliest observed event and all unobserved events except fo those following right after the latest observed event.</p>
+
+<aside class="complexity" title="Complexity">
+    <p>O(<em>n</em>), where <em>n</em> is the number of observed events in the tree.</p>
+
+</aside>
+</div>
+</div>
+<div role="article" class="variable" id="quantumevent.succeedingobservedevents">
+    <h3>
+        <code><a href="#quantumevent.succeedingobservedevents">succeeding​Observed​Events</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">inlinable</span>
+	<span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">succeedingObservedEvents</span>: [<span class="keyword">Self</span>]  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>The chain of observed events from the immediately succeeding observed events through the latest observed event.</p>
+
+</div>
+<div class="discussion">
+    <p>An empty array is returned for the latest observed event and all unobserved events.</p>
+
+<aside class="complexity" title="Complexity">
+    <p>O(<em>n</em>), where <em>n</em> is the number of observed events in the tree.</p>
+
+</aside>
+</div>
+</div>
+<div role="article" class="variable" id="quantumevent.precedingunobservedevents">
+    <h3>
+        <code><a href="#quantumevent.precedingunobservedevents">preceding​Unobserved​Events</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">inlinable</span>
+	<span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">precedingUnobservedEvents</span>: [<span class="keyword">Self</span>]  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>The chain of unobserved events leading to this event.</p>
+
+</div>
+<div class="discussion">
+    <p>An empty array is returned for all observed events and unobserved events that follow right after the latest observed event.</p>
+
+<aside class="complexity" title="Complexity">
+    <p>O(log <em>n</em>), where <em>n</em> is the number of unobserved events in the tree.</p>
+
+</aside>
+</div>
+</div>
+<div role="article" class="variable" id="quantumevent.succeedingunobservedevents">
+    <h3>
+        <code><a href="#quantumevent.succeedingunobservedevents">succeeding​Unobserved​Events</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">inlinable</span>
+	<span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">succeedingUnobservedEvents</span>: [<span class="keyword">Self</span>]  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>All unobserved events that require this event to be observed if any of them is to be observed.</p>
+
+</div>
+<div class="discussion">
+    <p>An empty array is returned for all final unobserved events.</p>
+
+<aside class="complexity" title="Complexity">
+    <p>O(<em>n</em>), where <em>n</em> is the number of unobserved events in the tree.</p>
+
+</aside>
+</div>
+</div>
+<div role="article" class="variable" id="quantumevent.allobservedevents">
+    <h3>
+        <code><a href="#quantumevent.allobservedevents">all​Observed​Events</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">inlinable</span>
+	<span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">allObservedEvents</span>: [<span class="keyword">Self</span>]  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>All observed events</p>
+
+</div>
+<div class="discussion">
+    <aside class="complexity" title="Complexity">
+    <p>O(<em>n</em>), where <em>n</em> is the number of observed events in the tree.</p>
+
+</aside>
+</div>
+</div>
+<div role="article" class="variable" id="quantumevent.allunobservedevents">
+    <h3>
+        <code><a href="#quantumevent.allunobservedevents">all​Unobserved​Events</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">inlinable</span>
+	<span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">allUnobservedEvents</span>: [<span class="keyword">Self</span>]  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>All unobserved events.</p>
+
+</div>
+<div class="discussion">
+    <aside class="complexity" title="Complexity">
+    <p>O(<em>n</em>), where <em>n</em> is the number of unobserved events in the tree.</p>
+
+</aside>
+</div>
+</div>
+<div role="article" class="variable" id="quantumevent.allbranchableevents">
+    <h3>
+        <code><a href="#quantumevent.allbranchableevents">all​Branchable​Events</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">inlinable</span>
+	<span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">allBranchableEvents</span>: [<span class="keyword">Self</span>]  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>The final event and all unobserved events.</p>
+
+</div>
+<div class="discussion">
+    <aside class="complexity" title="Complexity">
+    <p>O(<em>n</em>), where <em>n</em> is the number of unobserved events in the tree.</p>
+
+</aside>
+</div>
+</div>
+<div role="article" class="variable" id="quantumevent.equistatalobservedevents">
+    <h3>
+        <code><a href="#quantumevent.equistatalobservedevents">equi​Statal​Observed​Events</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">inlinable</span>
+	<span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">equiStatalObservedEvents</span>: [<span class="keyword">Self</span>]  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>All observed events that have moved the system to the same state as this event does.</p>
+
+</div>
+<div class="discussion">
+    <aside class="complexity" title="Complexity">
+    <p>O(<em>n</em>), where <em>n</em> is the number of observed events in the tree.</p>
+
+</aside>
+</div>
+</div>
+<div role="article" class="variable" id="quantumevent.equistatalsucceedingobservedevents">
+    <h3>
+        <code><a href="#quantumevent.equistatalsucceedingobservedevents">equi​Statal​Succeeding​Observed​Events</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">inlinable</span>
+	<span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">equiStatalSucceedingObservedEvents</span>: [<span class="keyword">Self</span>]  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>All succeeding observed events that have moved the system to the same state as this event does.</p>
+
+</div>
+<div class="discussion">
+    <aside class="complexity" title="Complexity">
+    <p>O(<em>n</em>), where <em>n</em> is the number of observed events in the tree.</p>
+
+</aside>
+</div>
+</div>
+<div role="article" class="variable" id="quantumevent.equistatalbranchableevents">
+    <h3>
+        <code><a href="#quantumevent.equistatalbranchableevents">equi​Statal​Branchable​Events</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">inlinable</span>
+	<span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">equiStatalBranchableEvents</span>: [<span class="keyword">Self</span>]  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>All branchable events that can move the system to the same state as this event does.</p>
+
+</div>
+<div class="discussion">
+    <aside class="complexity" title="Complexity">
+    <p>O(log <em>n</em>) on average and O(<em>n</em>) in worst case, where <em>n</em> is the number of events in the event-tree.</p>
+
+</aside>
+</div>
+</div>
+<div role="article" class="variable" id="quantumevent.equistatalunobservedevents">
+    <h3>
+        <code><a href="#quantumevent.equistatalunobservedevents">equi​Statal​Unobserved​Events</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">inlinable</span>
+	<span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">equiStatalUnobservedEvents</span>: [<span class="keyword">Self</span>]  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>All unobserved events that move the system to the same state as this event does.</p>
+
+</div>
+<div class="discussion">
+    <aside class="complexity" title="Complexity">
+    <p>O(log <em>n</em>) on average and O(<em>n</em>) in worst case, where <em>n</em> is the number of events in the event-tree.</p>
+
+</aside>
+</div>
+</div>
+<div role="article" class="variable" id="quantumevent.equistatalsucceedingunobservedevents">
+    <h3>
+        <code><a href="#quantumevent.equistatalsucceedingunobservedevents">equi​Statal​Succeeding​Unobserved​Events</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">inlinable</span>
+	<span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">equiStatalSucceedingUnobservedEvents</span>: [<span class="keyword">Self</span>]  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>All succeeding unobserved events that can moved the system to the same state as this event does.</p>
+
+</div>
+<div class="discussion">
+    <aside class="complexity" title="Complexity">
+    <p>O(log <em>n</em>) on average and O(<em>n</em>) in worst case, where <em>n</em> is the number of events in the event-tree.</p>
+
+</aside>
+</div>
+</div>
+<div role="article" class="variable" id="quantumevent.outcomeprobabilities">
+    <h3>
+        <code><a href="#quantumevent.outcomeprobabilities">outcome​Probabilities</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">outcomeProbabilities</span>: [<span class="type">State</span>: <span class="type">Double</span>]  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>The probability distribution for the outcomes of measuring the system at its present state, if this event is assumed to have happened.</p>
+
+</div>
+<div class="discussion">
+    <aside class="complexity" title="Complexity">
+    <p>O(<em>n</em>) on average, where <em>n</em> is the number of unobserved events in the tree.</p>
+
+</aside>
+</div>
+</div>
+    </section>
+    <section id="methods">
+        <h2>Methods</h2>
+
+        <div role="article" class="function" id="quantumevent.move(to:withequistatalbranchableevents:)">
+    <h3>
+        <code><a href="#quantumevent.move(to:withequistatalbranchableevents:)">move(to:​with​Equi​Statal​Branchable​Events:​)</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">move</span>(<span class="variable">to</span> <span class="variable">nextState</span>: <span class="type">State</span>, <span class="variable">withEquiStatalBranchableEvents</span>: <span class="type">Bool</span> = <span class="keyword">false</span>)  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Branches off this event (and optionally its equi-statal events) with new and distinct events that move the system to the given state.</p>
+
+</div>
+<div class="discussion">
+    <aside class="complexity" title="Complexity">
+    <p>O(1), if <code>withEquiStatalBranchableEvents == false</code>; otherwise, O(<em>n</em>), where <em>n</em> is the number of unobserved events in the tree.</p>
+
+</aside>
+</div>
+<h4>Parameters</h4>
+
+<table class="parameters">
+  <thead hidden>
+  <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <th>next​State</th>
+    <td><code class="type">State</code></td>
+    <td><p>The state the new events are to move the system to.</p>
+</td>
+</tr>
+<tr>
+    <th>with​Equi​Statal​Branchable​Events</th>
+    <td><code class="type">Bool</code></td>
+    <td><p>A <code>Boolean</code> value indicating whether this event's equi-statal events should be branched off with new events.</p>
+</td>
+</tr>
+  </tbody>
+</table>
+</div>
+<div role="article" class="function" id="quantumevent.movesucceedingunobservedevents(to:withthisevent:)">
+    <h3>
+        <code><a href="#quantumevent.movesucceedingunobservedevents(to:withthisevent:)">move​Succeeding​Unobserved​Events(to:​with​This​Event:​)</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">inlinable</span>
+	<span class="keyword">public</span> <span class="keyword">func</span> <span class="function">moveSucceedingUnobservedEvents</span>(<span class="variable">to</span> <span class="variable">nextState</span>: <span class="type">State</span>, <span class="variable">withThisEvent</span>: <span class="type">Bool</span> = <span class="keyword">false</span><span class="comment">/*, withEquiStatalBranchableEvents: Bool = false*/</span>)  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Branches off all succeeding unobserved events (and optionally this event) with new and distinct events that move the system to the given state.</p>
+
+</div>
+<div class="discussion">
+    <aside class="complexity" title="Complexity">
+    <p>O(<em>n</em>), where <em>n</em> is the number of unobserved events in the tree.</p>
+
+</aside>
+</div>
+<h4>Parameters</h4>
+
+<table class="parameters">
+  <thead hidden>
+  <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <th>next​State</th>
+    <td><code class="type">State</code></td>
+    <td><p>The state the new events are to move the system to.</p>
+</td>
+</tr>
+<tr>
+    <th>with​This​Event</th>
+    <td><code class="type">Bool</code></td>
+    <td><p>A <code>Boolean</code> value indicating whether this event should be branched off with new events.</p>
+</td>
+</tr>
+  </tbody>
+</table>
+</div>
+<div role="article" class="function" id="quantumevent.observenextevent()">
+    <h3>
+        <code><a href="#quantumevent.observenextevent()">observe​Next​Event()</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">observeNextEvent</span>()  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Observe which of the events that follows right after this event actually happened.</p>
+
+</div>
+<div class="discussion">
+    <p>It is possible that none of the events have happened.</p>
+
+<aside class="complexity" title="Complexity">
+    <p>O(<em>n</em>), where <em>n</em> is the number of unobserved events that follow right after this event.</p>
+
+</aside>
+</div>
+</div>
+    </section>
+
+
+
+        </article>
+    </main>
+
+    <footer>
+        <p>
+    Generated on <time datetime="2022-02-22T07:58:38+0000">February 22, 2022</time> using <a href="https://github.com/SwiftDocOrg/swift-doc">swift-doc</a> <span class="version">1.0.0-rc.1</span>.
+</p>
+    </footer>
+</body>
+</html>
