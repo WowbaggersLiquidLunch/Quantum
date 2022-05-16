@@ -9,14 +9,16 @@
 import Collections
 
 @propertyWrapper
-public struct Quantum<State> {
+public final class Quantum<State> {
+	public typealias `Self` = Quantum<State>
+	
 	/// <#Description#>
 	public typealias MutationChain = Deque<QuantumEvent<State>>
 	/// <#Description#>
 	public var unobservedMutationChain: MutationChain
 	public var persistentMutationChain: MutationChain
 	
-	public init(wrappedValue: State) {
+	public convenience init(wrappedValue: State) {
 		self.init(initialState: wrappedValue)
 	}
 	
@@ -31,13 +33,12 @@ public struct Quantum<State> {
 	public private(set) var intermediateState: State
 	
 	public var wrappedValue: State {
-		mutating get { observed() }
+		get { observed() }
 		set { unobservedMutationChain.append(.movement(newValue)) }
 	}
 	
 	public var projectedValue: Self {
 		get { self }
-		set { self = newValue }
 	}
 }
 
@@ -46,7 +47,7 @@ extension Quantum {
 //
 //	}
 	
-	public mutating func observe() {
+	public func observe() {
 		intermediateState = initialState
 		
 		func transit(toNewStateVia mutation: QuantumEvent<State>.Mutation) {
@@ -76,7 +77,7 @@ extension Quantum {
 		unobservedMutationChain = []
 	}
 	
-	public mutating func observed() -> State {
+	public func observed() -> State {
 		observe()
 		return intermediateState
 	}
